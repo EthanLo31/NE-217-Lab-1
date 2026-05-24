@@ -1,3 +1,4 @@
+% Question 1.8b
 I = 17;  
 
 n = 50 + I; 
