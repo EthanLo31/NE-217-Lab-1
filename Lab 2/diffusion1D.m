@@ -21,7 +21,7 @@
 
  
 
-function [x_out, t_out, U_out] = diffusion1d( kappa, x_rng, nx, t_rng, nt, u_init, u_bndry )
+function [x_out, t_out, U_out] = diffusion1D( kappa, x_rng, nx, t_rng, nt, u_init, u_bndry )
 
     % Check if kappa is scalar
     if ~isscalar(kappa)
@@ -54,6 +54,56 @@ function [x_out, t_out, U_out] = diffusion1d( kappa, x_rng, nx, t_rng, nt, u_ini
     end
 
     % Check if u_bndry is function handle
-    if ~isa(u_init, 'function_handle')
+    if ~isa(u_bndry, 'function_handle')
         throw(MException('MATLAB:invalid_argument', 'The argument u_bndry is not a function handle'));
     end
+
+    % Step 1: Error checking
+    % Ensure ratio is proper for stability
+    % Calculate h
+    h = (x_rng(2) - x_rng(1))/(nx - 1);
+
+    % Calculate dt
+    dt = (t_rng(2) - t_rng(1))/(nt - 1);
+
+    % Calculate ratio
+    r = ((kappa*dt)/h^2);
+
+    % If ratio is too large
+    if r > 0.5
+        % Calculate smallest nt only if necessary (performance overhead)
+        s_nt = ceil((2*kappa*(t_rng(2) - t_rng(1)))/(h^2) + 1);
+        % Tell user
+        throw(MException('MATLAB:invalid_argument', sprintf('The ratio kappa*dt/h^2 = %.4f. The smallest nt value for stability would be %d', r, s_nt)));
+    end
+
+    % Step 2: Initialization
+    % Setup the vectors and matrices that will be solved later. 
+    % Create column vector of x values
+    x_out = linspace(x_rng(1), x_rng(2), nx)';
+
+    % Create row vector of t values
+    t_out = linspace(t_rng(1), t_rng(2), nt);
+
+    % Create nx by nt matrix
+    U_out = zeros(nx, nt);
+
+    % Fill initial conditions
+    U_out(:,1) = u_init(x_out);
+
+    % Left boundary condition
+    U_out(1,:) = u_bndry(1, t_out);
+
+    % Right boundary condition
+    U_out(end,:) = u_bndry(2, t_out);
+
+    % Step 3: Solve
+    % Iterate through the matrix, avoid boundary conditions
+    for k = 1:nt-1
+        for i = 2:nx-1
+            % Use formula to calculate values
+            U_out(i,k+1) = U_out(i,k) + r * (U_out(i-1,k) - 2*U_out(i,k) + U_out(i+1,k));
+        end
+    end
+
+end
