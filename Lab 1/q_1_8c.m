@@ -1,4 +1,4 @@
-% ODE C
+% ODE Coefficients
 c1 = 3;
 c2 = 1;
 c3 = 4;
@@ -25,7 +25,7 @@ figure(1)
 plot(x, u, 'ro');
 xlabel('x');
 ylabel('u');
-title('e33lo')
+title('n4du, e33lo, ylepage, jteeter') 
 
 % Assignment solution:
 [x, u] = bvp([c1; c2; c3], [a, b], [u_g, u_b], f, 100);
@@ -35,4 +35,4 @@ figure(2)
 plot(x, u, 'r.', 'MarkerSize', 8);
 xlabel('x');
 ylabel('u');
-title('e33lo')
+title('n4du, e33lo, ylepage, jteeter') 

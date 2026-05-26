@@ -17,7 +17,7 @@ xlabel('x')
 
 ylabel('u') 
 
-title('n4du and e33lo')
+title('n4du, e33lo, ylepage, jteeter') 
 
 %bvp2 
 
@@ -33,4 +33,4 @@ xlabel('x')
 
 ylabel('u') 
 
-title('n4du and e33lo') 
+title('n4du, e33lo, ylepage, jteeter') 
