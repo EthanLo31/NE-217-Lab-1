@@ -1,4 +1,4 @@
-% Diffusion1D
+% diffusion1D
 % Approximates the heat diffusion equation in 1D
 % 
 % Parameters 
@@ -91,11 +91,13 @@ function [x_out, t_out, U_out] = diffusion1D( kappa, x_rng, nx, t_rng, nt, u_ini
     % Fill initial conditions
     U_out(:,1) = u_init(x_out);
 
-    % Left boundary condition
-    U_out(1,:) = u_bndry(1, t_out);
+    % Bounds
+    bndry = u_bndry(t_out);
 
-    % Right boundary condition
-    U_out(end,:) = u_bndry(2, t_out);
+    % Left
+    U_out(1,:) = bndry(1,:);
+    % Right
+    U_out(end,:) = bndry(2,:);
 
     % Step 3: Solve
     % Iterate through the matrix, avoid boundary conditions
