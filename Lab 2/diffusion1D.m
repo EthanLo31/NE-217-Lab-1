@@ -22,3 +22,38 @@
  
 
 function [x_out, t_out, U_out] = diffusion1d( kappa, x_rng, nx, t_rng, nt, u_init, u_bndry )
+
+    % Check if kappa is scalar
+    if ~isscalar(kappa)
+        throw(MException('MATLAB:invalid_argument', 'The argument kappa is not a scalar'));
+    end
+
+    % Check if x_rng is 2-element vector
+    if ~isvector(x_rng) || length(x_rng) ~= 2 
+        throw(MException('MATLAB:invalid_argument', 'The argument x_rng is not a 2-element vector'));
+    end
+
+    % Check if nx is scalar
+    if ~isscalar(nx)
+        throw(MException('MATLAB:invalid_argument', 'The argument nx is not a scalar'));
+    end
+
+    % Check if t_rng is 2-element vector
+    if ~isvector(t_rng) || length(t_rng) ~= 2 
+        throw(MException('MATLAB:invalid_argument', 'The argument t_rng is not a 2-element vector'));
+    end
+
+    % Check if nt is scalar
+    if ~isscalar(nt)
+        throw(MException('MATLAB:invalid_argument', 'The argument nt is not a scalar'));
+    end
+
+    % Check if u_init is function handle
+    if ~isa(u_init, 'function_handle')
+        throw(MException('MATLAB:invalid_argument', 'The argument u_init is not a function handle'));
+    end
+
+    % Check if u_bndry is function handle
+    if ~isa(u_init, 'function_handle')
+        throw(MException('MATLAB:invalid_argument', 'The argument u_bndry is not a function handle'));
+    end
